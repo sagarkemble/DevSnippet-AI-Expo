@@ -5,6 +5,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  FeedbackDialog,
+  type FeedbackTone,
+} from "@/components/dialogs/FeedbackDialog";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { SegmentedControl } from "@/components/ui/segmented-control";
@@ -33,7 +37,6 @@ import {
 } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import {
-  Alert,
   Image,
   Pressable,
   ScrollView,
@@ -41,12 +44,11 @@ import {
 } from "react-native";
 import { useColorScheme } from "nativewind";
 
-type Section = "male" | "female" | "common";
+type Section = "male" | "female";
 
 const AVATAR_SEGMENTS = [
   { value: "male" as Section, label: "Male" },
   { value: "female" as Section, label: "Female" },
-  { value: "common" as Section, label: "Common" },
 ];
 
 const THEME_SEGMENTS = [
@@ -75,7 +77,7 @@ export default function Profile() {
 
   const [editAvatar, setEditAvatar] = useState(false);
   const [avatarDraft, setAvatarDraft] = useState(profile.avatarUrl);
-  const [avatarSection, setAvatarSection] = useState<Section>("common");
+  const [avatarSection, setAvatarSection] = useState<Section>("male");
   const [gridWidth, setGridWidth] = useState(0);
 
   const tileSize =
@@ -86,11 +88,15 @@ export default function Profile() {
   const [busy, setBusy] = useState<"export" | "import" | "share" | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [feedback, setFeedback] = useState<{
+    tone: FeedbackTone;
+    title: string;
+    message?: string;
+  } | null>(null);
 
   const avatarList = useMemo(() => {
-    if (avatarSection === "male") return malePfpLinks;
-    if (avatarSection === "female") return femalePfpLinks;
-    return commonPfpLinks;
+    if (avatarSection === "male") return [...malePfpLinks, ...commonPfpLinks];
+    return [...femalePfpLinks, ...commonPfpLinks];
   }, [avatarSection]);
 
   const usernameValidation = useMemo(
@@ -119,14 +125,15 @@ export default function Profile() {
     try {
       const result = await backupService.exportAll();
       if (result.savedTo === "folder") {
-        Alert.alert(
-          "Export saved",
-          "Backup saved to the folder you selected.",
-        );
+        setFeedback({
+          tone: "success",
+          title: "Export saved",
+          message: "Backup saved to the folder you selected.",
+        });
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Export failed";
-      Alert.alert("Export failed", message);
+      setFeedback({ tone: "error", title: "Export failed", message });
     } finally {
       setBusy(null);
     }
@@ -145,10 +152,14 @@ export default function Profile() {
       if (result.skipped > 0) {
         lines.push(`Skipped ${result.skipped} (already exist).`);
       }
-      Alert.alert("Import complete", lines.join("\n"));
+      setFeedback({
+        tone: "success",
+        title: "Import complete",
+        message: lines.join("\n"),
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Import failed";
-      Alert.alert("Import failed", message);
+      setFeedback({ tone: "error", title: "Import failed", message });
     } finally {
       setBusy(null);
     }
@@ -160,7 +171,7 @@ export default function Profile() {
       await backupService.shareAll();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Share failed";
-      Alert.alert("Share failed", message);
+      setFeedback({ tone: "error", title: "Share failed", message });
     } finally {
       setBusy(null);
     }
@@ -174,9 +185,8 @@ export default function Profile() {
       setConfirmDelete(false);
       router.replace("/onboarding");
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Delete failed";
-      Alert.alert("Couldn't delete", message);
+      const message = error instanceof Error ? error.message : "Delete failed";
+      setFeedback({ tone: "error", title: "Couldn't delete", message });
     } finally {
       setDeleting(false);
     }
@@ -559,6 +569,14 @@ export default function Profile() {
           </View>
         </DialogContent>
       </Dialog>
+
+      <FeedbackDialog
+        visible={feedback !== null}
+        tone={feedback?.tone}
+        title={feedback?.title ?? ""}
+        message={feedback?.message}
+        onClose={() => setFeedback(null)}
+      />
     </View>
   );
 }

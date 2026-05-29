@@ -6,12 +6,11 @@ import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Dimensions, Image, Pressable, View } from "react-native";
 
-type Section = "male" | "female" | "common";
+type Section = "male" | "female";
 
 const SEGMENTS = [
   { value: "male" as Section, label: "Male" },
   { value: "female" as Section, label: "Female" },
-  { value: "common" as Section, label: "Common" },
 ];
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -25,13 +24,12 @@ export default function Avatar() {
   const setAvatarUrl = useProfileStore((s) => s.setAvatarUrl);
   const persisted = useProfileStore((s) => s.avatarUrl);
 
-  const [section, setSection] = useState<Section>("common");
+  const [section, setSection] = useState<Section>("male");
   const [selected, setSelected] = useState(persisted);
 
   const list = useMemo(() => {
-    if (section === "male") return malePfpLinks;
-    if (section === "female") return femalePfpLinks;
-    return commonPfpLinks;
+    if (section === "male") return [...malePfpLinks, ...commonPfpLinks];
+    return [...femalePfpLinks, ...commonPfpLinks];
   }, [section]);
 
   const onContinue = () => {

@@ -135,7 +135,7 @@ export default function DevAi() {
       {
         id: `u-${Date.now()}`,
         role: "user",
-        content: `Explain ${snippet.title}.`,
+        content: `Analyze this ${snippet.title} snippet, explain the logic, and highlight any issues.`,
       },
     ]);
     setThinking(true);

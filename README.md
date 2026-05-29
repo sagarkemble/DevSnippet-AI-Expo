@@ -1,56 +1,96 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <img src="./assets/icon/dark.png" width="128" />
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# DevSnippets-AI
 
-## Get started
+</div>
 
-1. Install dependencies
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Drizzle_ORM-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black" alt="Drizzle ORM" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/NativeWind-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="NativeWind" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Zustand-2D2D2D?style=for-the-badge&logoColor=white" alt="Zustand" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/OpenRouter-7C3AED?style=for-the-badge&logoColor=white" alt="OpenRouter" /></a>
+</p>
+
+A cross-platform mobile application built for developers to efficiently store, organize, and understand code snippets on the go. DevSnippets-AI combines local file storage with a fully integrated **AI assistant** capable of breaking down and explaining complex code in simple, beginner-friendly language.
+
+---
+
+🎥 **Demo:**  
+[View Demo Video](https://drive.google.com/file/d/1SQj4ttGJaUx_wOZ5edTv8lqkj2Dwbxp3/view?usp=sharing)
+
+A quick walkthrough of DevSnippets-AI application and its features.
+
+## Features
+
+- **AI Code Explanations (DevAi)** - Integrated chatbot UI powered by OpenRouter (GPT-4o-mini) to analyze and explain any of your saved code snippets.
+- **Local Relational DB** - Fast & offline-first data storage powered by SQLite and Drizzle ORM.
+- **Native File Storage** - Raw code is securely saved directly into the device's local document directory utilizing Expo File System.
+- **Dynamic Syntax Highlighting** - Full syntax support for dozens of programming languages (`JavaScript`, `Python`, `Rust`, `Go`, etc.).
+- **Rich Organization** - Categorize your library using custom Folders, Personality Tags, and Favorites.
+- **JSON Backup & Restore** - Export your entire snippet library and schema offline and import it freely across devices.
+- **Modern UI/UX** - Fully custom dark/light/system theme toggles built with TailwindCSS, NativeWind v4, and RN Primitives.
+- **Cross-Platform** - Built targeting iOS, Android, and Web using a single shared codebase running on Expo SDK 56.
+
+---
+
+## Installation
+
+### Prerequisites
+
+- Node.js & Bun (or npm/yarn/pnpm)
+- Expo CLI
+
+### Setup
+
+1. **Clone the repository:**
 
    ```bash
-   npm install
+   git clone https://github.com/your-username/DevSnippets-AI.git
+   cd DevSnippets-AI
    ```
 
-2. Start the app
+2. **Install dependencies:**
 
    ```bash
-   npx expo start
+   bun install
    ```
 
-In the output, you'll find options to open the app in a
+3. **Set up Environment Variables:**
+   Create a `.env` file in the root directory and add your OpenRouter API Key:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```env
+   EXPO_PUBLIC_OPENROUTER_API_KEY="your_api_key_here"
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+4. **Run Database Migrations:**
 
-## Get a fresh project
+   ```bash
+   bun run db:generate
+   ```
 
-When you're ready, run:
+5. **Start the App:**
+   ```bash
+   bun start
+   ```
 
-```bash
-npm run reset-project
-```
+---
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Tech Stack Overview
 
-### Other setup steps
+- **Frontend:** Expo, React Native, Expo Router
+- **State Management:** Zustand, AsyncStorage
+- **Database:** SQLite (`expo-sqlite`), Drizzle ORM
+- **AI Integration:** OpenRouter API (GPT-4o-mini)
+- **Styling:** NativeWind 4.2, Lucide Icons
+- **Form Handling:** React Hook Form, Zod
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+---
 
-## Learn more
+## License
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the [MIT License](LICENSE).
